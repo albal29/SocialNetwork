@@ -31,5 +31,6 @@ public class Main {
         MainService s = new MainService(new UserService(u),new FriendshipService(r));
         UI ui = new UI(s);
         ui.start();
+        System.out.println("S223");
 
     }}
