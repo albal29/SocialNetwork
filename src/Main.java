@@ -32,5 +32,6 @@ public class Main {
         UI ui = new UI(s);
         ui.start();
         System.out.println("S223");
+        System.out.println("dadadada");
 
     }}
