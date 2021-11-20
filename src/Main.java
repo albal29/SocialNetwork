@@ -33,5 +33,8 @@ public class Main {
         ui.start();
         System.out.println("S223");
         System.out.println("dadadada");
+        System.out.println("dadadada");
+
+
 
     }}
