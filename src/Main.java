@@ -40,5 +40,8 @@ public class Main {
         System.out.println("test");
         LocalDateTime date = LocalDateTime.now();
         System.out.println(date.getMonth().toString());
+
         System.out.println("cerinta1");
+
+        System.out.println("cerinta2");
     }}
