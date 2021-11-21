@@ -156,7 +156,7 @@ public class UI {
         try{
             System.out.println("Friends of"+srv.findUser(aux).toString()+":");
             srv.getUserFriends(aux).forEach(System.out::println);
-
+            System.out.println("test2");
         }
         catch (RepoException r) {
             System.out.println(r.getMessage());
