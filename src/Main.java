@@ -42,4 +42,5 @@ public class Main {
         System.out.println(date.getMonth().toString());
         System.out.println("cerinta2");
         System.out.println("cerinta2test2");
+        System.out.println("cerinta2test2");
     }}
