@@ -44,4 +44,5 @@ public class Main {
         System.out.println("cerinta1");
 
         System.out.println("cerinta2");
+        System.out.println("cerinta2test2");
     }}
