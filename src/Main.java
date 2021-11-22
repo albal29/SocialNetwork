@@ -20,24 +20,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args){
-//        UtilizatorFile rep = new UtilizatorFile("src/useri.txt",new UserValidator());
-//        FriendshipFile rep1 = new FriendshipFile("src/prietenii.txt",new FriendshipValidator());
-//        MainService srv = new MainService(new UserService(rep),new FriendshipService(rep1));
-//        UI ui = new UI(srv);
-//        ui.start();
+    public static void main(String[] args) {
+        UtilizatorFile rep = new UtilizatorFile("src/useri.txt", new UserValidator());
+        FriendshipFile rep1 = new FriendshipFile("src/prietenii.txt", new FriendshipValidator());
+        MainService srv = new MainService(new UserService(rep), new FriendshipService(rep1));
+        UI ui = new UI(srv);
+        ui.start();
 
 //        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new FriendshipValidator());
 //        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
 //        MainService s = new MainService(new UserService(u),new FriendshipService(r));
 //        UI ui = new UI(s);
 //        ui.start();
-        System.out.println("S223");
+        /*System.out.println("S223");
         System.out.println("dadadada");
         System.out.println("dadadada");
         System.out.println("dadadada");
         System.out.println("dadadada");
         System.out.println("test");
         LocalDateTime date = LocalDateTime.now();
-        System.out.println(date.getMonth().toString());
-    }}
+        System.out.println(date.getMonth().toString());*/
+    }
+}

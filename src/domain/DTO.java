@@ -14,6 +14,9 @@ public class DTO {
         this.date = date;
     }
 
+    public DTO(String firstName, String lastName) {
+    }
+
     public String getFirstName() {
         return firstName;
     }
