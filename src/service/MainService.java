@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class MainService {
     UserService us;
@@ -99,6 +100,25 @@ public class MainService {
                .map(f -> new DTO(findUser(f.getId().getRight()).getFirstName(),findUser(f.getId().getRight()).getLastName(),f.getDate()))
                .collect(Collectors.toList()));
        return friends;
+    }
+
+    public List<DTO> getUserFriendsByMonth(Long id, String month) {
+        List<Friendship> friendships = StreamSupport
+                .stream(findAllFriendships().spliterator(), false)
+                .collect(Collectors.toList())
+                .stream()
+                .filter(x -> x.getDate().getMonth().toString().equalsIgnoreCase((month)) && (x.getId().getLeft().equals(id) || x.getId().getRight().equals(id)))
+                .collect(Collectors.toList());
+        List<DTO> users = new ArrayList<>();
+        friendships.forEach(x -> {
+            if (x.getId().getLeft().equals(id)) {
+                users.add(new DTO(findUser(x.getId().getRight()).getFirstName(),findUser(x.getId().getRight()).getLastName(),x.getDate()));
+            }
+            if (x.getId().getRight().equals(id)) {
+                users.add(new DTO(findUser(x.getId().getLeft()).getFirstName(),findUser(x.getId().getLeft()).getLastName(),x.getDate()));
+            }
+        });
+        return users;
     }
 
     public User updateUser(Long id,String fName,String lName,String password){
