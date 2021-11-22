@@ -1,6 +1,7 @@
 package service;
 
 import Networking.Networking;
+import domain.DTO;
 import domain.Friendship;
 import domain.Tuple;
 import domain.User;
@@ -10,6 +11,7 @@ import repository.RepoException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainService {
     UserService us;
@@ -85,18 +87,18 @@ public class MainService {
 
     }
 
-    public List<User> getUserFriends(Long id){
-        List<User> friends = new ArrayList<User>();
-        for(Friendship f : findAllFriendships()){
-            if(f.getId().getLeft()==id){
-                friends.add(findUser(f.getId().getRight()));
-            }
-            if(f.getId().getRight()==id){
-                friends.add(findUser(f.getId().getLeft()));
-            }
-
-        };
-        return friends;
+    public List<DTO> getUserFriends(Long id){
+        List<Friendship> friendships = new ArrayList<Friendship>();
+        findAllFriendships().forEach(friendships::add);
+        List<DTO> friends = friendships.stream()
+                .filter(f -> f.getId().getLeft() == id)
+                .map(f -> new DTO(findUser(f.getId().getLeft()).getFirstName(),findUser(f.getId().getLeft()).getLastName(),f.getDate()))
+                .collect(Collectors.toList());
+       friends.addAll(friendships.stream()
+               .filter(f -> f.getId().getRight() == id)
+               .map(f -> new DTO(findUser(f.getId().getRight()).getFirstName(),findUser(f.getId().getRight()).getLastName(),f.getDate()))
+               .collect(Collectors.toList()));
+       return friends;
     }
 
     public User updateUser(Long id,String fName,String lName,String password){
