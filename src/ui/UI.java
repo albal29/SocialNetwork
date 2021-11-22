@@ -22,7 +22,7 @@ public class UI {
 
     public void printmenu(){
         String menu = new String();
-        menu = "1.Add user\n2.Add friendship\n3.Remove user\n4.Remove friendship\n5.Show all users\n6.Show all friendships\n7.Number of communities\n8.Most sociable community\n9.Show friends of user\n10.Exit";
+        menu = "1.Add user\n2.Add friendship\n3.Remove user\n4.Remove friendship\n5.Show all users\n6.Show all friendships\n7.Number of communities\n8.Most sociable community\n9.Show friends of user\n10.Show friends of user by month\n11.Exit";
         System.out.println(menu);
     }
 
@@ -154,9 +154,21 @@ public class UI {
     public void userFriends(){
         Long aux = scan.nextLong();
         try{
-            System.out.println("Friends of"+srv.findUser(aux).toString()+":");
+            System.out.println("Friends of "+srv.findUser(aux).toString()+":");
             srv.getUserFriends(aux).forEach(System.out::println);
 
+        }
+        catch (RepoException r) {
+            System.out.println(r.getMessage());
+        }
+    }
+
+    public void userFriendsByMonth(){
+        Long aux = scan.nextLong();
+        String month = scan.next();
+        try{
+            System.out.println("Friends of "+srv.findUser(aux).toString()+":");
+            srv.getUserFriendsByMonth(aux,month).forEach(System.out::println);
         }
         catch (RepoException r) {
             System.out.println(r.getMessage());
@@ -188,7 +200,7 @@ public class UI {
     public void start(){
         boolean ok = true;
         int c;
-        while(ok==true){
+        while(ok){
             printmenu();
             System.out.println("Give option: \n");
             c = scan.nextInt();
@@ -229,7 +241,7 @@ public class UI {
                      break;
                  }
                  case 10: {
-                    updateUser();
+                    userFriendsByMonth();
                     break;
                  }
                  case 11:{
