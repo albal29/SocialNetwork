@@ -27,11 +27,11 @@ public class Main {
 //        UI ui = new UI(srv);
 //        ui.start();
 
-//        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new FriendshipValidator());
-//        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
-//        MainService s = new MainService(new UserService(u),new FriendshipService(r));
-//        UI ui = new UI(s);
-//        ui.start();
+        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new FriendshipValidator());
+        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
+        MainService s = new MainService(new UserService(u),new FriendshipService(r));
+        UI ui = new UI(s);
+        ui.start();
         System.out.println("S223");
         System.out.println("dadadada");
         System.out.println("dadadada");
