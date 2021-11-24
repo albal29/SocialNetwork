@@ -1,4 +1,5 @@
 import domain.Friendship;
+import domain.Message;
 import domain.Tuple;
 import domain.User;
 import domain.validation.FriendshipValidator;
@@ -29,10 +30,14 @@ public class Main {
 //        ui.start();
 
 //        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new FriendshipValidator());
-//        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
+       UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
 //        MainService s = new MainService(new UserService(u),new FriendshipService(r));
 //        UI ui = new UI(s);
 //        ui.start();
-        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
-        System.out.println(u.findOne(2L));
+        List<User> list = new ArrayList<>();
+        list.add(u.findOne(2L));
+        list.add(u.findOne(3L));
+        Message m = new Message(u.findOne(1L),list,"exemplu",null);
+        MessageDbRepository r = new MessageDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz");
+        r.save(m);
     }}
