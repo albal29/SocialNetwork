@@ -6,6 +6,7 @@ import domain.validation.UserValidator;
 import domain.validation.ValidationException;
 import repository.Repository;
 import repository.database.FriendshipDbRepository;
+import repository.database.MessageDbRepository;
 import repository.database.UserDbRepository;
 import repository.file.FriendshipFile;
 import repository.file.UtilizatorFile;
@@ -27,23 +28,11 @@ public class Main {
 //        UI ui = new UI(srv);
 //        ui.start();
 
-        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new FriendshipValidator());
+//        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new FriendshipValidator());
+//        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
+//        MainService s = new MainService(new UserService(u),new FriendshipService(r));
+//        UI ui = new UI(s);
+//        ui.start();
         UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz",new UserValidator());
-        MainService s = new MainService(new UserService(u),new FriendshipService(r));
-        UI ui = new UI(s);
-        ui.start();
-        System.out.println("S223");
-        System.out.println("dadadada");
-        System.out.println("dadadada");
-        System.out.println("dadadada");
-        System.out.println("dadadada");
-        System.out.println("test");
-        LocalDateTime date = LocalDateTime.now();
-        System.out.println(date.getMonth().toString());
-
-        System.out.println("cerinta1");
-
-        System.out.println("cerinta2");
-        System.out.println("cerinta2test2");
-        System.out.println("cerinta2test2");
+        System.out.println(u.findOne(2L));
     }}
