@@ -40,4 +40,5 @@ public class Main {
         Message m = new Message(u.findOne(1L),list,"exemplu",null);
         MessageDbRepository r = new MessageDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz");
         r.save(m);
+        r.findAll().forEach(c -> c.getTo().forEach(System.out::println));
     }}

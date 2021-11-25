@@ -25,6 +25,9 @@ public class Message extends Entity<Integer>{
         this.reply = reply;
         this.setId(id);
     }
+    public Message(){
+
+    }
 
     public User getFrom() {
         return from;
