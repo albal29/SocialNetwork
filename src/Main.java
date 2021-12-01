@@ -14,6 +14,7 @@ import repository.file.UtilizatorFile;
 import repository.memory.InMemoryRepository;
 import service.FriendshipService;
 import service.MainService;
+import service.MessageService;
 import service.UserService;
 import ui.UI;
 
@@ -37,8 +38,15 @@ public class Main {
         List<User> list = new ArrayList<>();
         list.add(u.findOne(2L));
         list.add(u.findOne(3L));
+        List<User> list1 = new ArrayList<>();
+        list1.add(u.findOne(1L));
         Message m = new Message(u.findOne(1L),list,"exemplu",null);
+
+
         MessageDbRepository r = new MessageDbRepository("jdbc:postgresql://localhost:5432/social_network","postgres","897891ioutz");
-        r.save(m);
-        r.findAll().forEach(c -> c.getTo().forEach(System.out::println));
+        MessageService s = new MessageService(r);
+        Message m1 = new Message(u.findOne(2l),list1,"iti raspund",r.findOne(1));
+              s.save(m1);
+//        r.findAll().forEach(c -> c.getTo().forEach(System.out::println));
+        s.getConv(1L,2l).forEach(System.out::println);
     }}
