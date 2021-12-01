@@ -147,16 +147,14 @@ public class UI {
     public void showAllFriendships(){
         for(Friendship f : srv.findAllFriendships())
         {
-            System.out.println("Friendship between"+srv.findUser(f.getId().getLeft()).toString()+"and"+srv.findUser(f.getId().getRight()));
+            System.out.println("Friendship between "+srv.findUser(f.getId().getLeft()).toString()+" and "+srv.findUser(f.getId().getRight()));
         }
     }
 
-    public void userFriends(){
-        Long aux = scan.nextLong();
+    public void userFriends(Long aux){
         try{
             System.out.println("Friends of "+srv.findUser(aux).toString()+":");
             srv.getUserFriends(aux).forEach(System.out::println);
-            System.out.println("test2");
         }
         catch (RepoException r) {
             System.out.println(r.getMessage());
@@ -237,7 +235,8 @@ public class UI {
                      break;
                  }
                  case 9:{
-                     userFriends();
+                     Long aux = scan.nextLong();
+                     userFriends(aux);
                      break;
                  }
                  case 10: {

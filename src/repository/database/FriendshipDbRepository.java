@@ -39,7 +39,8 @@ public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Frie
                 Integer id1 = resultSet.getInt("id1");
                 Integer id2 = resultSet.getInt("id2");
                 String date = resultSet.getString("date");
-                Friendship f = new Friendship(Long.valueOf(id1),Long.valueOf(id2));
+                String statut = resultSet.getString("statut");
+                Friendship f = new Friendship(Long.valueOf(id1),Long.valueOf(id2),LocalDateTime.parse(date),statut);
                 return f;
             }
         }
@@ -62,7 +63,8 @@ public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Frie
                 Integer id1 = resultSet.getInt("id1");
                 Integer id2 = resultSet.getInt("id2");
                 String date = resultSet.getString("date");
-                Friendship f = new Friendship(Long.valueOf(id1),Long.valueOf(id2),LocalDateTime.parse(date));
+                String statut = resultSet.getString("statut");
+                Friendship f = new Friendship(Long.valueOf(id1),Long.valueOf(id2),LocalDateTime.parse(date),statut);
                 friends.add(f);
             }
             return friends;
@@ -77,8 +79,8 @@ public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Frie
     public Friendship save(Friendship entity) {
         Friendship f = findOne(entity.getId());
         if(f!=null)
-            throw new RepoException("User already exists!");
-        String sql = "insert into friendships(id1,id2,date) values (?, ?, ?)";
+            throw new RepoException("Friendship already exists!");
+        String sql = "insert into friendships(id1,id2,date,statut) values (?, ?, ?,?)";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -86,6 +88,7 @@ public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Frie
             ps.setInt(1,entity.getId().getLeft().intValue());
             ps.setInt(2,entity.getId().getRight().intValue());
             ps.setString(3,entity.getDate().toString());
+            ps.setString(4,entity.getStatut());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,6 +121,8 @@ public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Frie
 
     @Override
     public Friendship update(Friendship entity) {
-        return null;
+        delete(entity.getId());
+        save(entity);
+        return entity;
     }
 }

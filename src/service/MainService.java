@@ -1,16 +1,11 @@
 package service;
 
 import Networking.Networking;
-import domain.DTO;
-import domain.Friendship;
-import domain.Tuple;
-import domain.User;
+import domain.*;
 import domain.validation.ValidationException;
 import repository.RepoException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -92,12 +87,12 @@ public class MainService {
         List<Friendship> friendships = new ArrayList<Friendship>();
         findAllFriendships().forEach(friendships::add);
         List<DTO> friends = friendships.stream()
-                .filter(f -> f.getId().getLeft() == id)
-                .map(f -> new DTO(findUser(f.getId().getLeft()).getFirstName(),findUser(f.getId().getLeft()).getLastName(),f.getDate()))
+                .filter(f -> f.getId().getLeft() == id && f.getStatut().equals("Approved"))
+                .map(f -> new DTO(findUser(f.getId().getRight()).getFirstName(),findUser(f.getId().getRight()).getLastName(),f.getDate()))
                 .collect(Collectors.toList());
        friends.addAll(friendships.stream()
-               .filter(f -> f.getId().getRight() == id)
-               .map(f -> new DTO(findUser(f.getId().getRight()).getFirstName(),findUser(f.getId().getRight()).getLastName(),f.getDate()))
+               .filter(f -> f.getId().getRight() == id && f.getStatut().equals("Approved"))
+               .map(f -> new DTO(findUser(f.getId().getLeft()).getFirstName(),findUser(f.getId().getLeft()).getLastName(),f.getDate()))
                .collect(Collectors.toList()));
        return friends;
     }
@@ -107,7 +102,7 @@ public class MainService {
                 .stream(findAllFriendships().spliterator(), false)
                 .collect(Collectors.toList())
                 .stream()
-                .filter(x -> x.getDate().getMonth().toString().equalsIgnoreCase((month)) && (x.getId().getLeft().equals(id) || x.getId().getRight().equals(id)))
+                .filter(x -> x.getDate().getMonth().toString().equalsIgnoreCase((month)) && x.getStatut().equals("Approved")||(x.getId().getLeft().equals(id) || x.getId().getRight().equals(id)))
                 .collect(Collectors.toList());
         List<DTO> users = new ArrayList<>();
         friendships.forEach(x -> {
@@ -128,5 +123,18 @@ public class MainService {
         u.setLastName(lName);
         u.setPassword(password);
         return us.update(u);
+    }
+
+    public Iterable<Friendship> findPendingFriendships(){
+        Set<Friendship> friendsToBe = new HashSet<>();
+        fs.findAll().forEach(x->{
+            if(x.getStatut().equals("Pending"))
+                friendsToBe.add(x);
+        });
+        return friendsToBe;
+    }
+
+    public Friendship updateFriendship(Friendship f){
+        return fs.update(f);
     }
 }
