@@ -145,7 +145,7 @@ public class LoginUi extends UI{
         List<User> usr = new ArrayList<>();
         usr.add(u);
         System.out.println("Type message:");
-        String msg = scan.nextLine();
+        String msg = scan.next();
         Message m = new Message(srv.findUser(userAccount.getId()),usr,msg,null);
         srv.saveMsg(m);
     }
@@ -156,7 +156,7 @@ public class LoginUi extends UI{
         System.out.println("Enter message id:");
         Integer id = scan.nextInt();
         System.out.println("Type message:");
-        String msg = scan.nextLine();
+        String msg = scan.next();
         Message m = new Message(srv.findUser(userAccount.getId()),usr,msg,srv.findMsg(id));
         srv.saveMsg(m);
     }

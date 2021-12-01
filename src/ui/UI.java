@@ -17,7 +17,7 @@ public class UI {
 
     public UI(MainService srv){
         this.srv = srv;
-        this.scan = new Scanner(System.in);
+        this.scan = new Scanner(System.in).useDelimiter("\n");
     }
 
     public void printmenu(){
