@@ -1,9 +1,14 @@
 package ui;
 
 import domain.Friendship;
+import domain.Message;
+import domain.User;
 import domain.UserAccount;
 import repository.RepoException;
 import service.MainService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LoginUi extends UI{
@@ -18,7 +23,7 @@ public class LoginUi extends UI{
     }
 
     public void secondMenu(){
-        System.out.println("1.Add friend\n2.See requests\n3.See friends\n4.Sign off\n");
+        System.out.println("1.Add friend\n2.See requests\n3.See friends\n4.Send message\n5.Enter chat\n6.Exit\n");
     }
 
     public boolean logInToAccount() {
@@ -87,6 +92,28 @@ public class LoginUi extends UI{
         }
     }
 
+    public void sendMsg(){
+        System.out.println("Write the message:");
+        String msg = scan.next();
+        System.out.println("Give the usernames(type none to stop):");
+        String username = new String();
+        List<User> users = new ArrayList<>();
+        while(!username.equals("none")){
+            username = scan.nextLine();
+            if(username.equals("none")) break;
+            try{
+                users.add(srv.getByUsername(username));
+            }
+            catch (RepoException re) {
+                System.out.println(re.toString());
+            }
+        }
+        Message m = new Message(srv.findUser(userAccount.getId()),users,msg,null);
+        srv.saveMsg(m);
+    }
+
+
+
 
     public void start() {
         boolean ok = true;
@@ -104,10 +131,73 @@ public class LoginUi extends UI{
                     addUser();
                     break;
                 }
-                case 3 -> ok = false;
+                case 3 ->{
+                    ok = false;
+                    break;
+                }
+
+
             }
         }
     }
+
+    void sendChatMsg(User u){
+        List<User> usr = new ArrayList<>();
+        usr.add(u);
+        System.out.println("Type message:");
+        String msg = scan.nextLine();
+        Message m = new Message(srv.findUser(userAccount.getId()),usr,msg,null);
+        srv.saveMsg(m);
+    }
+
+    void replyMsg(User u){
+        List<User> usr = new ArrayList<>();
+        usr.add(u);
+        System.out.println("Enter message id:");
+        Integer id = scan.nextInt();
+        System.out.println("Type message:");
+        String msg = scan.nextLine();
+        Message m = new Message(srv.findUser(userAccount.getId()),usr,msg,srv.findMsg(id));
+        srv.saveMsg(m);
+    }
+
+
+    void enterChat(){
+        System.out.println("Enter username to chat with");
+        String username = scan.next();
+        try{
+            User u = srv.getByUsername(username);
+            boolean ok = true;
+            while(ok==true){
+                srv.getChats(userAccount.getId(),u.getId()).forEach(System.out::println);
+                System.out.println("1.Send message\n2.Reply to a message\n3.Exit");
+                System.out.println("Option:");
+                int command = scan.nextInt();
+                switch (command) {
+                    case 1 -> {
+                        sendChatMsg(u);
+                        break;
+                    }
+                    case 2 -> {
+                       replyMsg(u);
+                        break;
+                    }
+                    case 3 ->{
+                        ok = false;
+                        break;
+                    }
+
+
+                }
+
+            }
+        }
+        catch (RepoException re) {
+            System.out.println(re.toString());
+        }
+        }
+
+
 
 
     public void startLogIn(){
@@ -115,7 +205,7 @@ public class LoginUi extends UI{
         boolean ok = logInToAccount();
         int command;
         while (ok) {
-            checkRequests();
+//            checkRequests();
             secondMenu();
             System.out.println("Option:");
             command = scan.nextInt();
@@ -131,7 +221,15 @@ public class LoginUi extends UI{
                 case 3 -> {
                     userFriends(userAccount.getId());
                 }
-                case 4 -> ok = false;
+                case 4 -> {
+                    sendMsg();
+                    break;
+                }
+                case 5 ->{
+                    enterChat();
+                    break;
+                }
+                case 6 -> ok = false;
             }
         }
     }

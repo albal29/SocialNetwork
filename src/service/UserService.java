@@ -1,6 +1,7 @@
 package service;
 
 import domain.User;
+import repository.RepoException;
 import repository.Repository;
 
 import java.util.ArrayList;
@@ -46,6 +47,14 @@ public class UserService implements Service<Long, User>{
         }
         Collections.sort(aux);
         return aux;
+    }
+
+    public User getbyusername(String username){
+        for(User u : findAll())
+            if(u.getUserName().equals(username))
+                return u;
+
+        throw new RepoException("User with given username doesn't exist!");
     }
 
 }

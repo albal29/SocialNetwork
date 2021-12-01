@@ -59,7 +59,7 @@ public class DTOchat {
 
     @Override
     public String toString() {
-        String s = userFrom+":";
+        String s = "("+id+")"+userFrom+":";
         if(reply!=null) s = s + "(replying to '"+ reply.getMessage() +"')" +"\n";
             else s += "\n";
         s = s + message;

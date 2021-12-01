@@ -12,10 +12,12 @@ import java.util.stream.StreamSupport;
 public class MainService {
     UserService us;
     FriendshipService fs;
+    MessageService ms;
 
-    public MainService(UserService us, FriendshipService fs) {
+    public MainService(UserService us, FriendshipService fs,MessageService ms) {
         this.us = us;
         this.fs = fs;
+        this.ms = ms;
     }
 
     public User addUser(User entity){
@@ -132,6 +134,21 @@ public class MainService {
                 friendsToBe.add(x);
         });
         return friendsToBe;
+    }
+
+    public Message saveMsg(Message entity){
+        return ms.save(entity);
+    }
+    public List<DTOchat> getChats(Long id1,Long id2){
+        return ms.getConv(id1,id2);
+    }
+
+    public Message findMsg(Integer id){
+        return ms.findOne(id);
+    }
+
+    public User getByUsername(String username){
+        return us.getbyusername(username);
     }
 
     public Friendship updateFriendship(Friendship f){

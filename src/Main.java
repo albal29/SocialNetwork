@@ -31,9 +31,11 @@ public class Main {
 //        UI ui = new UI(srv);
 //        ui.start();
 
-        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network_lab5", "postgres", "Pers2017", new FriendshipValidator());
-        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network_lab5", "postgres", "Pers2017", new UserValidator());
-        MainService s = new MainService(new UserService(u), new FriendshipService(r));
+        FriendshipDbRepository r = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/social_network", "postgres", "897891ioutz", new FriendshipValidator());
+        UserDbRepository u = new UserDbRepository("jdbc:postgresql://localhost:5432/social_network", "postgres", "897891ioutz", new UserValidator());
+        MessageDbRepository m = new MessageDbRepository("jdbc:postgresql://localhost:5432/social_network", "postgres", "897891ioutz");
+
+        MainService s = new MainService(new UserService(u), new FriendshipService(r),new MessageService(m));
         LoginUi ui = new LoginUi(s);
         ui.start();
        /* List<User> list = new ArrayList<>();
