@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LoginUi extends UI{
+public class LoginUi extends UI {
     UserAccount userAccount;
 
     public LoginUi(MainService srv) {
@@ -22,7 +22,7 @@ public class LoginUi extends UI{
         System.out.println("1.Log in\n2.Sign up\n3.exit\n");
     }
 
-    public void secondMenu(){
+    public void secondMenu() {
         System.out.println("1.Add friend\n2.See requests\n3.See friends\n4.Send message\n5.Enter chat\n6.Exit\n");
     }
 
@@ -48,7 +48,7 @@ public class LoginUi extends UI{
     }
 
     public void friendshipsMng() {
-        if(srv.findPendingFriendships().spliterator().getExactSizeIfKnown()==0){
+        if (srv.findPendingFriendships().spliterator().getExactSizeIfKnown() == 0) {
             System.out.println("There are no pending friendships.");
             return;
         }
@@ -58,14 +58,8 @@ public class LoginUi extends UI{
                 System.out.println("Do you accept? yes/no");
                 String answer = scan.next();
                 switch (answer) {
-                    case "yes" -> {
-                        srv.updateFriendship(new Friendship(x.getId().getLeft(), x.getId().getRight(), x.getDate(), "Approved"));
-                        break;
-                    }
-                    case "no" -> {
-                        srv.updateFriendship(new Friendship(x.getId().getLeft(), x.getId().getRight(), x.getDate(), "Rejected"));
-                        break;
-                    }
+                    case "yes" -> srv.updateFriendship(new Friendship(x.getId().getLeft(), x.getId().getRight(), x.getDate(), "Approved"));
+                    case "no" -> srv.updateFriendship(new Friendship(x.getId().getLeft(), x.getId().getRight(), x.getDate(), "Rejected"));
                     default -> System.out.println("It will wait");
                 }
             } else System.out.println("No requests");
@@ -77,42 +71,39 @@ public class LoginUi extends UI{
         String username = scan.next();
         for (var user : srv.findAllUsers()) {
             if (user.getUserName().equals(username)) {
-                try{
+                try {
                     srv.addFriendship(new Friendship(userAccount.getId(), user.getId()));
-                }catch (RepoException re){
+                } catch (RepoException re) {
                     System.out.println(re.getMessage());
                 }
             }
         }
     }
 
-    public void checkRequests(){
-        if(srv.findPendingFriendships().spliterator().getExactSizeIfKnown()>0){
+    public void checkRequests() {
+        if (srv.findPendingFriendships().spliterator().getExactSizeIfKnown() > 0) {
             System.out.println("You have new friendship Requests");
         }
     }
 
-    public void sendMsg(){
+    public void sendMsg() {
         System.out.println("Write the message:");
         String msg = scan.next();
         System.out.println("Give the usernames(type none to stop):");
-        String username = new String();
+        String username = "";
         List<User> users = new ArrayList<>();
-        while(!username.equals("none")){
+        while (!username.equals("none")) {
             username = scan.nextLine();
-            if(username.equals("none")) break;
-            try{
+            if (username.equals("none")) break;
+            try {
                 users.add(srv.getByUsername(username));
-            }
-            catch (RepoException re) {
-                System.out.println(re.toString());
+            } catch (RepoException re) {
+                System.out.println(re);
             }
         }
-        Message m = new Message(srv.findUser(userAccount.getId()),users,msg,null);
+        Message m = new Message(srv.findUser(userAccount.getId()), users, msg, null);
         srv.saveMsg(m);
     }
-
-
 
 
     public void start() {
@@ -123,84 +114,63 @@ public class LoginUi extends UI{
             System.out.println("Option:");
             command = scan.nextInt();
             switch (command) {
-                case 1 -> {
-                    startLogIn();
-                    break;
-                }
-                case 2 -> {
-                    addUser();
-                    break;
-                }
-                case 3 ->{
-                    ok = false;
-                    break;
-                }
+                case 1 -> startLogIn();
+                case 2 -> addUser();
+                case 3 -> ok = false;
 
 
             }
         }
     }
 
-    void sendChatMsg(User u){
+    void sendChatMsg(User u) {
         List<User> usr = new ArrayList<>();
         usr.add(u);
         System.out.println("Type message:");
         String msg = scan.next();
-        Message m = new Message(srv.findUser(userAccount.getId()),usr,msg,null);
+        Message m = new Message(srv.findUser(userAccount.getId()), usr, msg, null);
         srv.saveMsg(m);
     }
 
-    void replyMsg(User u){
+    void replyMsg(User u) {
         List<User> usr = new ArrayList<>();
         usr.add(u);
         System.out.println("Enter message id:");
         Integer id = scan.nextInt();
         System.out.println("Type message:");
         String msg = scan.next();
-        Message m = new Message(srv.findUser(userAccount.getId()),usr,msg,srv.findMsg(id));
+        Message m = new Message(srv.findUser(userAccount.getId()), usr, msg, srv.findMsg(id));
         srv.saveMsg(m);
     }
 
 
-    void enterChat(){
+    void enterChat() {
         System.out.println("Enter username to chat with");
         String username = scan.next();
-        try{
+        try {
             User u = srv.getByUsername(username);
             boolean ok = true;
-            while(ok==true){
-                srv.getChats(userAccount.getId(),u.getId()).forEach(System.out::println);
+            while (ok) {
+                srv.getChats(userAccount.getId(), u.getId()).forEach(System.out::println);
                 System.out.println("1.Send message\n2.Reply to a message\n3.Exit");
                 System.out.println("Option:");
                 int command = scan.nextInt();
                 switch (command) {
-                    case 1 -> {
-                        sendChatMsg(u);
-                        break;
-                    }
-                    case 2 -> {
-                       replyMsg(u);
-                        break;
-                    }
-                    case 3 ->{
-                        ok = false;
-                        break;
-                    }
+                    case 1 -> sendChatMsg(u);
+                    case 2 -> replyMsg(u);
+                    case 3 -> ok = false;
 
 
                 }
 
             }
+        } catch (RepoException re) {
+            System.out.println(re);
         }
-        catch (RepoException re) {
-            System.out.println(re.toString());
-        }
-        }
+    }
 
 
-
-
-    public void startLogIn(){
+    public void startLogIn() {
         System.out.println("Please login first");
         boolean ok = logInToAccount();
         int command;
@@ -210,25 +180,11 @@ public class LoginUi extends UI{
             System.out.println("Option:");
             command = scan.nextInt();
             switch (command) {
-                case 1 -> {
-                    addFriend();
-                    break;
-                }
-                case 2 -> {
-                    friendshipsMng();
-                    break;
-                }
-                case 3 -> {
-                    userFriends(userAccount.getId());
-                }
-                case 4 -> {
-                    sendMsg();
-                    break;
-                }
-                case 5 ->{
-                    enterChat();
-                    break;
-                }
+                case 1 -> addFriend();
+                case 2 -> friendshipsMng();
+                case 3 -> userFriends(userAccount.getId());
+                case 4 -> sendMsg();
+                case 5 -> enterChat();
                 case 6 -> ok = false;
             }
         }

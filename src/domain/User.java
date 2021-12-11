@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class User extends Entity<Long>{
+public class User extends Entity<Long> {
     private String firstName;
     private String lastName;
     private String userName;
@@ -13,7 +13,7 @@ public class User extends Entity<Long>{
     private String password;
     private List<User> friends;
 
-    public User(Long id,String firstName, String lastName, String userName, String eMail, String password) {
+    public User(Long id, String firstName, String lastName, String userName, String eMail, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -22,7 +22,9 @@ public class User extends Entity<Long>{
         this.friends = new ArrayList<>();
         this.setId(id);
     }
-    public User(){}
+
+    public User() {
+    }
 
     public String getFirstName() {
         return firstName;
@@ -54,10 +56,12 @@ public class User extends Entity<Long>{
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User that = (User) o;
-        return this.getId().equals(that.getId())||this.geteMail().equals(that.geteMail())||this.getUserName().equals(that.geteMail());}
+        return this.getId().equals(that.getId()) || this.geteMail().equals(that.geteMail()) || this.getUserName().equals(that.geteMail());
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(getId(),geteMail(),getUserName());
+        return Objects.hash(getId(), geteMail(), getUserName());
     }
 
 
@@ -89,11 +93,11 @@ public class User extends Entity<Long>{
         this.friends = friends;
     }
 
-    public void addFriend(User u){
+    public void addFriend(User u) {
         friends.add(u);
     }
 
-    public void remFriend(User u){
+    public void remFriend(User u) {
         friends.remove(u);
     }
 }

@@ -14,33 +14,9 @@ public class DTO {
         this.date = date;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
     @Override
     public String toString() {
-        return "First name: "+ firstName + " | " + "Last name: " + lastName + " | " + "Date: " + date.toString();
+        return "First name: " + firstName + " | " + "Last name: " + lastName + " | " + "Date: " + date.toString();
     }
 }
 

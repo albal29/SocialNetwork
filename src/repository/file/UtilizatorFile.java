@@ -3,17 +3,14 @@ package repository.file;
 import domain.User;
 import domain.validation.Validator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class UtilizatorFile extends AbstractFileRepository<Long, User>{
+public class UtilizatorFile extends AbstractFileRepository<Long, User> {
 
 
     public UtilizatorFile(String fileName, Validator<User> validator) {
         super(fileName, validator);
     }
-
 
 
     @Override
@@ -25,15 +22,15 @@ public class UtilizatorFile extends AbstractFileRepository<Long, User>{
         u.setUserName(attributes.get(3));
         u.seteMail(attributes.get(4));
         u.setPassword(attributes.get(5));
-       return u;
+        return u;
 
     }
 
     @Override
     public String createEntityAsString(User entity) {
-        String aux = new String();
+        String aux;
 
-        aux = String.valueOf(entity.getId())+";"+entity.getFirstName()+";"+entity.getLastName()+";"+entity.getUserName()+";"+entity.geteMail()+";"+entity.getPassword();
+        aux = entity.getId() + ";" + entity.getFirstName() + ";" + entity.getLastName() + ";" + entity.getUserName() + ";" + entity.geteMail() + ";" + entity.getPassword();
         return aux;
     }
 }
